@@ -13,7 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', 'admin\AuthController@loginForm')->name('admin.login');
-Route::post('/login', 'admin\AuthController@login')->name('admin.login.post');
 
-Route::get('/dashboard', 'admin\DashboardController@index');
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+  Route::middleware(['guest:admin'])->group(function () {
+    Route::get('/login', 'admin\AuthController@loginForm')->name('login');
+    Route::post('/login', 'admin\AuthController@login')->name('login.post');
+  });
+
+  Route::group(['middleware' => 'auth:admin'], function(){
+    Route::post('/logout', 'admin\AuthController@logout')->name('logout');
+    Route::get('/dashboard', 'admin\DashboardController@index')->name('dashboard');
+  });
+});

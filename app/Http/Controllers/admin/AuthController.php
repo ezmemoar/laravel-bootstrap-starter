@@ -20,15 +20,22 @@ class AuthController extends Controller
             "password" => "required",
         ]);
 
-        if(Auth::attempt($validatedForm)) {
+        if(Auth::guard('admin')->attempt($validatedForm)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect()->intended(route('admin.dashboard'));
         }
 
         return back()->withErrors([
-            'username' => 'Username does not match our records',
-            'password' => 'Password Incorrect',
+            'username' => 'Username or password is incorrect',
         ]);
+    }
+
+    public function logout(Request $request){
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login');
     }
 }

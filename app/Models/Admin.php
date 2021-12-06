@@ -11,11 +11,11 @@ class Admin extends Authenticatable
 {
     use Notifiable, HasFactory;
 
-    protected $fillable = ['name', 'username', 'password', "role_id"];
+    protected $fillable = ['name', 'username', 'password', 'role_id'];
 
     protected $hidden = ['password'];
 
     public function role(){
-        $this->hasOne(Role::class, 'role_id', 'role_id');
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 }

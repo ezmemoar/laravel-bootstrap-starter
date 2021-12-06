@@ -24,7 +24,7 @@
         <div class="card-body py-4">
           <x-form method="POST" :action="route('admin.login.post')">
             <x-form-input name="username" placeholder="Username" />
-            <x-form-input name="password" placeholder="Password" />
+            <x-form-input name="password" type="password" placeholder="Password" />
             <button class="btn btn-primary">Login</button>
           </x-form>
         </div>
