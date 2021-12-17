@@ -15,17 +15,17 @@ class AdminTableSeeder extends Seeder
     public function run()
     {
         Admin::create([
-            'name' => 'Superadmin',
+            'name' => 'superadmin',
             'username' => 'superadmin',
             'password' => bcrypt("testing123"),
-            'role_id' => 1
+            'status' => 1,
         ]);
 
         Admin::create([
             'name' => 'Admin',
             'username' => 'admin',
             'password' => bcrypt("testing123"),
-            'role_id' => 2
+            'status' => 1,
         ]);
 
     }
