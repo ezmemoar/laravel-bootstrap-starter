@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -46,7 +48,7 @@ class AdminController extends Controller
             'password' => 'required|confirmed|min:8',
             'status' => 'required|numeric|max:1',
         ], [
-            'status.max' => 'Status seems to have encounter unexpected value, please input again'
+            'status.max' => 'Status seems to have encountered unexpected value, please input again'
         ]);
 
         unset($validatedForm["role"]);
@@ -54,21 +56,10 @@ class AdminController extends Controller
 
         $newAdmin = Admin::create($validatedForm);
 
-        if($newAdmin){
+        if ($newAdmin) {
             $newAdmin->assignRole($request->role);
             return redirect()->route('admin.admin.list')->with('success', 'Admin Created Successfully');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -90,9 +81,83 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editPatch(Request $request, $id)
+    public function editPatch(Request $request, Admin $admin)
     {
-        //
+        $validation = $request->is_change_password == 'no' ?
+            $this->validateEditWithOldPassword($request, $admin) :
+            $this->validateEditWithNewPassword($request, $admin);
+
+        if (!$validation->status) {
+            return redirect()->back()->withErrors($validation->error)->withInput($request->except('password', 'old_password', 'new_password', 'new_password_confirmation'));
+        }
+
+        $test = $admin->update($validation->validatedForm);
+        return redirect()->route('admin.admin.list')->with('success', 'Admin Updated Successfully');
+    }
+
+    private function validateEditWithOldPassword(Request $request, Admin $admin)
+    {
+        $status = true;
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'username' => 'required|max:50',
+            'role' => 'required|exists:roles,name',
+            'password' => 'required|min:8',
+            'status' => 'required|numeric|max:1',
+        ], [
+            'status.max' => 'Status seems to have encountered unexpected value, please input again'
+        ]);
+
+        $isPasswordIncorrect = !Hash::check($request->password, $admin->password);
+
+        if ($isPasswordIncorrect) {
+            $validator->getMessageBag()->add('password', "Password doesn't match with user current password");
+        }
+
+        if ($isPasswordIncorrect || $validator->fails()) {
+            $status = false;
+        }
+
+        return (object)[
+            "status" => $status,
+            "validatedForm" => $request->only('name', 'username', 'role', 'status'),
+            "error" => $validator->getMessageBag(),
+        ];
+    }
+
+    private function validateEditWithNewPassword(Request $request, Admin $admin)
+    {
+        $status = true;
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'username' => 'required|max:50',
+            'role' => 'required|exists:roles,name',
+            'new_password' => 'required|min:8|confirmed',
+            'status' => 'required|numeric|max:1',
+        ], [
+            'status.max' => 'Status seems to have encountered unexpected value, please input again'
+        ]);
+
+        $isPasswordIncorrect = !Hash::check($request->old_password, $admin->password);
+
+        if ($isPasswordIncorrect) {
+            $validator->getMessageBag()->add('old_password', "Password doesn't match with user current password");
+        }
+
+        if ($isPasswordIncorrect || $validator->fails()) {
+            $status = false;
+        }
+
+        $form = $request->only('name', 'username', 'role', 'status');
+        $form['password'] = bcrypt($request->new_password);
+
+        return (object)[
+            "status" => $status,
+            "validatedForm" => $form,
+            "error" => $validator->getMessageBag(),
+        ];
     }
 
     /**
