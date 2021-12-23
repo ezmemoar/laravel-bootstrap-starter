@@ -1,1 +1,1 @@
-import "alpinejs"
+import "petite-vue"
