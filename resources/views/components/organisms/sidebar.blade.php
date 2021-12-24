@@ -32,7 +32,7 @@
     </div>
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
-            <x-molecules.sidebar.menu-list :menu-item="[
+            <x-molecules.sidebar.menu-list name="Menu" :permission="['list admin', 'create admin']" :menu-item="[
                 [
                     'name' => 'Dashboard',
                     'icon' => 'pe-7s-rocket',
@@ -42,19 +42,46 @@
                 [
                     'name' => 'Admin',
                     'icon' => 'pe-7s-diamond',
-                    'href' => '#',
+                    'permission' => ['list admin', 'create admin'],
                     'children' => [
                         [
                             'href' => route('admin.admin.list'),
                             'name' => 'List Admin',
+                            'permission' => 'list admin'
                         ],
                         [
                             'href' => route('admin.admin.create'),
                             'name' => 'Create Admin',
+                            'permission' => 'create admin'
                         ],
                     ],
                 ],
-            ]" name="Menu"></x-molecules.sidebar.menu-list>
+            ]"></x-molecules.sidebar.menu-list>
+
+            @role('superadmin')
+            <x-molecules.sidebar.menu-list name="Permission" :menu-item="[
+                [
+                    'name' => 'Role',
+                    'icon' => 'pe-7s-rocket',
+                    'href' => route('admin.role.list'),
+                    'children' => [],
+                ],
+                [
+                    'name' => 'Permission',
+                    'icon' => 'pe-7s-rocket',
+                    'children' => [
+                        [
+                            'href' => route('admin.permission.list'),
+                            'name' => 'Permission',
+                        ],
+                        [
+                            'href' => route('admin.permission-group.list'),
+                            'name' => 'Permission Group',
+                        ],
+                    ],
+                ],
+            ]"></x-molecules.sidebar.menu-list>
+            @endrole
         </div>
     </div>
 </div>

@@ -6,13 +6,13 @@ use Illuminate\View\Component;
 
 class MenuList extends Component
 {
-    public $name;
-    protected $menuItem;
+    public $name, $menuItem, $permission;
 
-    public function __construct($name, $menuItem)
+    public function __construct($name, $menuItem, $permission)
     {
         $this->name = $name;
         $this->menuItem = $menuItem;
+        $this->permission = $permission;
     }
 
     public function render()

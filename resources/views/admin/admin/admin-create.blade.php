@@ -10,7 +10,7 @@
           </i>
         </div>
         <div>Create Admin
-          <div class="page-title-subheading">Create new Admin
+          <div class="page-title-subheading">Create New Admin
           </div>
         </div>
       </div>
