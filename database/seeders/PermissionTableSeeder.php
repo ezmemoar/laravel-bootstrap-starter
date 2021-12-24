@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\Models\Admin;
 use DB;
 
 class PermissionTableSeeder extends Seeder
@@ -20,14 +19,13 @@ class PermissionTableSeeder extends Seeder
         $superadmin = Role::create(['name' => 'superadmin', 'guard_name' => 'admin']);
         Role::create(['name' => 'admin', 'guard_name' => 'admin']);
 
-        Permission::create(["name" => "list admin", 'guard_name' => 'admin']);
-        Permission::create(["name" => "create admin", 'guard_name' => 'admin']);
-        Permission::create(["name" => "edit admin", 'guard_name' => 'admin']);
-        Permission::create(["name" => "delete admin", 'guard_name' => 'admin']);
+        Permission::create(["name" => "list admin", 'group' => 'admin', 'guard_name' => 'admin']);
+        Permission::create(["name" => "create admin", 'group' => 'admin', 'guard_name' => 'admin']);
+        Permission::create(["name" => "edit admin", 'group' => 'admin', 'guard_name' => 'admin']);
+        Permission::create(["name" => "delete admin", 'group' => 'admin', 'guard_name' => 'admin']);
 
         $permissions = Permission::all();
         $superadmin->syncPermissions($permissions);
-        Permission::create(["name" => "t", 'guard_name' => 'admin']);
 
         DB::table('model_has_roles')->insert([
             'role_id' => 1,
