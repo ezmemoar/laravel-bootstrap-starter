@@ -1,8 +1,6 @@
 name: Laravel
 
-on:
-  pull_request:
-    branches: [master, dev]
+on: [push]
 
 jobs:
   laravel-tests:
@@ -34,3 +32,19 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
         run: vendor/bin/phpunit
+  run-lint:
+    runs-on: ubuntu-latest
+    needs: laravel-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
