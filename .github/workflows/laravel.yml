@@ -23,15 +23,15 @@ jobs:
         run: |
           mkdir -p database
           touch database/database.sqlite
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
 
   laravel-tests:
     runs-on: ubuntu-latest
     needs: setup-laravel
     steps:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
         run: vendor/bin/phpunit
 
   run-lint:
