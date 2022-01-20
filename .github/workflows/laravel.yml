@@ -3,9 +3,8 @@ name: Laravel
 on: [push]
 
 jobs:
-  setup-laravel:
+  laravel-test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
@@ -28,17 +27,15 @@ jobs:
           DB_DATABASE: database/database.sqlite
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/phpunit
-
   run-lint:
     runs-on: ubuntu-latest
-    needs: setup-laravel
+    needs: laravel-test
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
-
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
