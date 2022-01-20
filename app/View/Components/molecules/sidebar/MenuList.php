@@ -8,7 +8,7 @@ class MenuList extends Component
 {
     public $name, $menuItem, $permission;
 
-    public function __construct($name, $menuItem, $permission)
+    public function __construct($name, $menuItem, $permission = [])
     {
         $this->name = $name;
         $this->menuItem = $menuItem;

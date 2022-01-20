@@ -6,13 +6,18 @@ use Illuminate\View\Component;
 
 class MenuItem extends Component
 {
-    public $isActive, $href, $icon, $name, $permission;
-    public function __construct($isActive, $href, $icon, $name, $permission)
+    public $name, $href, $icon, $permission;
+
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
+    public function __construct(string $name, string $href, string $icon = 'pe-7s-rocket', array $permission = [])
     {
-        $this->isActive = $isActive;
+        $this->name = $name;
         $this->href = $href;
         $this->icon = $icon;
-        $this->name = $name;
         $this->permission = $permission;
     }
 
