@@ -11,7 +11,8 @@ class Permission extends SpatiePermission
 
     protected $fillable = ['name', 'group', 'guard_name'];
 
-    public function scopeAdmin($query){
+    public function scopeAdmin($query)
+    {
         $query->where('guard_name', 'admin');
     }
 }

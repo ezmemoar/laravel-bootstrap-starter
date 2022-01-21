@@ -6,7 +6,11 @@ use Illuminate\View\Component;
 
 class MenuDropdownItem extends Component
 {
-    public $name, $children, $icon, $isActive, $permission;
+    public $name;
+    public $children;
+    public $icon;
+    public $isActive;
+    public $permission;
 
     /**
      * Create a new component instance.

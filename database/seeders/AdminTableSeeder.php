@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Admin;
+use Illuminate\Database\Seeder;
 
 class AdminTableSeeder extends Seeder
 {
@@ -27,6 +27,5 @@ class AdminTableSeeder extends Seeder
             'password' => bcrypt("testing123"),
             'status' => 1,
         ]);
-
     }
 }

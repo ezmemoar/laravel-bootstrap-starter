@@ -20,7 +20,7 @@ class AuthController extends Controller
             "password" => "required",
         ]);
 
-        if(Auth::guard('admin')->attempt($validatedForm)) {
+        if (Auth::guard('admin')->attempt($validatedForm)) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'));
@@ -31,7 +31,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

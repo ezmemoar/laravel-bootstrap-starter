@@ -6,7 +6,10 @@ use Illuminate\View\Component;
 
 class MenuItem extends Component
 {
-    public $name, $href, $icon, $permission;
+    public $name;
+    public $href;
+    public $icon;
+    public $permission;
 
     /**
      * Create a new component instance.
