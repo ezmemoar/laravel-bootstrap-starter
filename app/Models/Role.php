@@ -9,7 +9,8 @@ class Role extends SpatieRole
 {
     use HasFactory;
 
-    public function scopeAdmin($query){
+    public function scopeAdmin($query)
+    {
         $query->where('guard_name', 'admin');
     }
 }

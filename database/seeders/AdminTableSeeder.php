@@ -27,6 +27,5 @@ class AdminTableSeeder extends Seeder
             'password' => bcrypt("testing123"),
             'status' => 1,
         ]);
-
     }
 }

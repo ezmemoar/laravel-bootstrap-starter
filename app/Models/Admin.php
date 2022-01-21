@@ -10,13 +10,16 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use Notifiable, HasFactory, HasRoles;
+    use Notifiable;
+    use HasFactory;
+    use HasRoles;
 
     protected $fillable = ['name', 'username', 'password', 'status'];
 
     protected $hidden = ['password'];
 
-    public function getMainRole(){
+    public function getMainRole()
+    {
         return $this->roles->pluck('name')[0];
     }
 }

@@ -6,7 +6,9 @@ use Illuminate\View\Component;
 
 class MenuList extends Component
 {
-    public $name, $menuItem, $permission;
+    public $name;
+    public $menuItem;
+    public $permission;
 
     public function __construct($name, $menuItem, $permission = [])
     {
